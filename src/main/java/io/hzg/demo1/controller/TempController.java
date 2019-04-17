@@ -16,7 +16,7 @@ public class TempController {
     @Autowired
     private BitcoinApi bitcoinApi;
     @GetMapping("/test")
-        public void test(){
+        public void test() throws Throwable{
             JSONObject chainInfo = bitcoinApi.getChainInfo();
 
 
