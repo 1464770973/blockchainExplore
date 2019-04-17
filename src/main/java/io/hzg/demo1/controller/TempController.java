@@ -18,15 +18,7 @@ public class TempController {
     @GetMapping("/test")
         public void test(){
             JSONObject chainInfo = bitcoinApi.getChainInfo();
-        String txhash = "21c6f7de3fb8ad3e5e034b85b9ac80cdc51214bcbe5ebfed9267dd8a19e239ea";
-        JSONObject transaction = bitcoinApi.getTransaction(txhash);
-        String blockhash = "000000000000004b1aecd12119a19e38efdce8c385f89a5d3a7698427108a2ee";
-        JSONObject block = bitcoinApi.getBlock(blockhash);
-        JSONObject noTxBlock = bitcoinApi.getNoTxBlock(blockhash);
-        String blockhash2 = "00000000000000a727d074e9d1cc0a225540eb40693d6aa15d702b0bd96d378b";
-        JSONArray blockHeaders = bitcoinApi.getBlockHeaders(10, blockhash2);
-        JSONObject mempoolInfo = bitcoinApi.getMempoolInfo();
-        JSONObject mempoolContents = bitcoinApi.getMempoolContents();
+
 
 
 
