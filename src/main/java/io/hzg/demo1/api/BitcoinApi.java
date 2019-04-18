@@ -8,7 +8,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "bitcoin",url = "http://localhost:18322")
+@FeignClient(name = "bitcoin",url = "http://localhost:18332")
 public interface BitcoinApi {
     @GetMapping("/rest/chaininfo.json")
     JSONObject getChainInfo();
