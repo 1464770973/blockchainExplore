@@ -23,7 +23,11 @@ public class TempController {
         JSONObject transaction = bitcoinApi.getTransaction(txhash);
         String blockhash="00000000002ea370298e41313a72e801ca9af98590072e6f70f4c799256818ba";
         JSONObject block = bitcoinApi.getBlock(blockhash);
-
+        String blockhash1="00000000d697923a94239134b515efad96f228e4afd03b152266671990a72291";
+        JSONArray blockHeaders = bitcoinApi.getBlockHeaders(10, blockhash1);
+        JSONObject noTxBlock = bitcoinApi.getNoTxBlock(blockhash);
+        JSONObject mempoolContents = bitcoinApi.getMempoolContents();
+        JSONObject mempoolInfo = bitcoinApi.getMempoolInfo();
 
 
     }

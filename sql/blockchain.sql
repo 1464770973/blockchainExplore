@@ -12,3 +12,6 @@ CREATE TABLE `blockchain` (
   PRIMARY KEY (`blockchain_id`),
   unique `idx_name_type`(`name`,`type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 auto_increment=1;
+insert into `blockchain` (`blockchain_id`, `name`, `type`, `shortname`) values('1','bitcoin','main','bit');
+insert into `blockchain` (`blockchain_id`, `name`, `type`, `shortname`) values('2','bitcoin','test','bit');
+insert into `blockchain` (`blockchain_id`, `name`, `type`, `shortname`) values('3','ethereum','main','eth');
