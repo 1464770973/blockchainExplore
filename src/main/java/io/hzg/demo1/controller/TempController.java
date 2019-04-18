@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class TempController {
     @Autowired
     private BitcoinApi bitcoinApi;
+
     @GetMapping("/test")
-        public void test() {
-            JSONObject chainInfo = bitcoinApi.getChainInfo();
+    public void test() {
+        JSONObject chainInfo = bitcoinApi.getChainInfo();
+        String txhash = "61eb4df1752a10705d5ec6c4657b16e770810117bc56e9d991c31d7e088057ec";
+        JSONObject transaction = bitcoinApi.getTransaction(txhash);
+        String blockhash="00000000002ea370298e41313a72e801ca9af98590072e6f70f4c799256818ba";
+        JSONObject block = bitcoinApi.getBlock(blockhash);
 
 
 
-
-        }
+    }
 }
