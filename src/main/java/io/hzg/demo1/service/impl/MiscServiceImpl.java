@@ -3,8 +3,14 @@ package io.hzg.demo1.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import io.hzg.demo1.api.BitcoinApi;
+import io.hzg.demo1.api.BitcoinJsonRpcClient;
 import io.hzg.demo1.dao.BlockMapper;
+import io.hzg.demo1.dao.TransactionDetailMapper;
+import io.hzg.demo1.dao.TransactionMapper;
+import io.hzg.demo1.enumeration.TransactionDetailType;
 import io.hzg.demo1.po.Block;
+import io.hzg.demo1.po.Transaction;
+import io.hzg.demo1.po.TransactionDetail;
 import io.hzg.demo1.service.MiscService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -18,6 +24,12 @@ public class MiscServiceImpl implements MiscService {
     private BitcoinApi bitcoinApi;
     @Autowired
     private BlockMapper blockMapper;
+    @Autowired
+    private TransactionMapper transactionMapper;
+    @Autowired
+    private TransactionDetailMapper transactionDetailMapper;
+    @Autowired
+    private BitcoinJsonRpcClient bitcoinJsonRpcClient;
     @Async
     @Override
     public void importFromHeight(Integer blockHeight, Boolean isClean) {
@@ -56,5 +68,69 @@ public class MiscServiceImpl implements MiscService {
             temphash = blockOrigin.getString("nextblockhash");
         }
 
+    }
+    public void importTx(JSONObject tx, String blockhash, Date time) throws Throwable {
+        Transaction transaction = new Transaction();
+        String txid = tx.getString("txid");
+        transaction.setTxid(txid);
+        transaction.setTxhash(tx.getString("hash"));
+        transaction.setBlockhash(blockhash);
+        transaction.setSize(tx.getLong("size"));
+        transaction.setWeight(tx.getInteger("weight"));
+        transaction.setTime(time);
+        transactionMapper.insert(transaction);
+
+        JSONArray vouts = tx.getJSONArray("vout");
+        for (int i = 0; i < vouts.size(); i++) {
+            importVoutDetail(vouts.getJSONObject(i),txid);
+        }
+
+        JSONArray vins = tx.getJSONArray("vin");
+
+        //todo vin0 coinbase tx
+
+        for (int i = 1; i < vins.size(); i++) {
+            importVinDetail(vins.getJSONObject(i),txid);
+        }
+    }
+    public void importVoutDetail(JSONObject vout, String txid){
+        TransactionDetail transactionDetail = new TransactionDetail();
+        transactionDetail.setTxid(txid);
+        JSONObject scriptPubKey = vout.getJSONObject("scriptPubKey");
+        JSONArray addresses = scriptPubKey.getJSONArray("addresses");
+        //todo check whether sync addresses
+        if (addresses != null && !addresses.isEmpty()){
+            String address = addresses.getString(0);
+            transactionDetail.setAddress(address);
+        }
+        Double amount = vout.getDouble("value");
+        transactionDetail.setAmount(amount);
+        transactionDetail.setType((byte) TransactionDetailType.Receive.ordinal());
+
+        transactionDetailMapper.insert(transactionDetail);
+
+    }
+
+    public void importVinDetail(JSONObject vin, String txidOrigin) throws Throwable {
+        String txid = vin.getString("txid");
+        Integer vout = vin.getInteger("vout");
+
+        JSONObject rawTransaxtion = bitcoinJsonRpcClient.getRawTransaxtion(txid);
+        JSONArray vouts = rawTransaxtion.getJSONArray("vout");
+        JSONObject jsonObject = vouts.getJSONObject(vout);
+
+        TransactionDetail transactionDetail = new TransactionDetail();
+        transactionDetail.setTxid(txidOrigin);
+        transactionDetail.setType((byte) TransactionDetailType.Send.ordinal());
+        Double amount = jsonObject.getDouble("value");
+        transactionDetail.setAmount(amount);
+        JSONObject scriptPubKey = jsonObject.getJSONObject("scriptPubKey");
+        JSONArray addresses = scriptPubKey.getJSONArray("addresses");
+        if (addresses != null){
+            String address = addresses.getString(0);
+            transactionDetail.setAddress(address);
+        }
+
+        transactionDetailMapper.insert(transactionDetail);
     }
 }

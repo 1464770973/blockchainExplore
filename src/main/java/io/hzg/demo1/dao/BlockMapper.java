@@ -1,6 +1,8 @@
 package io.hzg.demo1.dao;
 
 import io.hzg.demo1.po.Block;
+import org.apache.ibatis.annotations.Mapper;
+
 
 public interface BlockMapper {
     int deleteByPrimaryKey(String blockhash);
