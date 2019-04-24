@@ -39,10 +39,12 @@ public class MiscServiceImpl implements MiscService {
 
     @Async
     @Override
-    public void importFromHash(String blockHash, Boolean isClean) {
+    public void importFromHash(String blockHash, Boolean isClean) throws Throwable {
 
         if (isClean){
             blockMapper.truncate();
+            transactionMapper.truncate();
+            transactionDetailMapper.truncate();
         }
 
         String temphash = blockHash;
@@ -57,6 +59,9 @@ public class MiscServiceImpl implements MiscService {
             Date date = new Date(time * 1000);
             block.setTime(date);
             JSONArray tx = blockOrigin.getJSONArray("tx");
+            for (int i=0;i<tx.size();i++){
+                importTx(tx.getJSONObject(i),temphash,date);
+            }
             block.setTxSize(tx.size());
             block.setSizeOnDisk(blockOrigin.getLong("size"));
             block.setDifficulty(blockOrigin.getDouble("difficulty"));
