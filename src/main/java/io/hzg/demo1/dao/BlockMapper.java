@@ -3,6 +3,8 @@ package io.hzg.demo1.dao;
 import io.hzg.demo1.po.Block;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 
 public interface BlockMapper {
     int deleteByPrimaryKey(String blockhash);
@@ -17,5 +19,6 @@ public interface BlockMapper {
 
     int updateByPrimaryKey(Block record);
     int truncate();
+    List<Block> selectRecent();
 
 }

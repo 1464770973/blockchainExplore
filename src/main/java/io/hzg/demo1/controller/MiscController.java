@@ -26,7 +26,7 @@ public class MiscController {
     }
 
     @GetMapping("/importFromHash")
-    public void importFromHash(@RequestParam String blockhash, @RequestParam(required = false,defaultValue = "false") Boolean isClean){
+    public void importFromHash(@RequestParam String blockhash, @RequestParam(required = false,defaultValue = "false") Boolean isClean) throws Throwable {
         miscService.importFromHash(blockhash, isClean);
     }
 
@@ -34,4 +34,6 @@ public class MiscController {
     public ImportStateDTO getImportState(){
         return null;
     }
+
 }
+
