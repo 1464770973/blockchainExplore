@@ -7,6 +7,15 @@ public class TransactionListDTO {
     private String txhash;
     private Date time;
     private Double amount;
+    private Double snum;
+
+    public Double getSnum() {
+        return snum;
+    }
+
+    public void setSnum(Double snum) {
+        this.snum = snum;
+    }
 
     public String getTxid() {
         return txid;
