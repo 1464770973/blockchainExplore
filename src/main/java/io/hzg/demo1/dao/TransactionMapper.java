@@ -2,6 +2,8 @@ package io.hzg.demo1.dao;
 
 import io.hzg.demo1.po.Transaction;
 
+import java.util.List;
+
 public interface TransactionMapper {
     int deleteByPrimaryKey(String txid);
 
@@ -15,4 +17,5 @@ public interface TransactionMapper {
 
     int updateByPrimaryKey(Transaction record);
     int truncate();
+    List<Transaction> selectTransaction();
 }
