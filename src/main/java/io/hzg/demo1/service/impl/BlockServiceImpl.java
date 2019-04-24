@@ -18,4 +18,10 @@ public class BlockServiceImpl implements BlockService {
 
 
     }
+
+    @Override
+    public List<Block> selectBlockByHeight(Integer blockheight) {
+        List<Block> blocks = blockMapper.selectBlockByHeight(blockheight);
+        return blocks;
+    }
 }

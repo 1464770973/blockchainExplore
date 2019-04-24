@@ -46,8 +46,26 @@ private BlockService blockService;
         return  null;
     }
     @GetMapping("/getBlockDetailByHeight")
-    public BlockDetailDTO getBlockDetailByHeight(@RequestParam Integer blockheight){
-        return  null;
+    public List<BlockDetailDTO> getBlockDetailByHeight(@RequestParam Integer blockheight){
+        List<Block> blocks = blockService.selectBlockByHeight(blockheight);
+        List<BlockDetailDTO> blockDetailDTOS = blocks.stream().map(block -> {
+            BlockDetailDTO blockDetailDTO = new BlockDetailDTO();
+            blockDetailDTO.setBlockhash(block.getBlockhash());
+            blockDetailDTO.setDifficulty(block.getDifficulty());
+            blockDetailDTO.setHeight(block.getHeight());
+            blockDetailDTO.setMerkleRoot(block.getMerkleRoot());
+            blockDetailDTO.setNextBlockhash(block.getNextBlockhash());
+            blockDetailDTO.setOutputTotal(block.getOutputTotal());
+            blockDetailDTO.setPrevBlockhash(block.getPrevBlockhash());
+            blockDetailDTO.setSizeOnDisk(block.getSizeOnDisk());
+            blockDetailDTO.setTime(block.getTime());
+            blockDetailDTO.setTransactionFees(block.getTransactionFees());
+
+            return blockDetailDTO;
+        }).collect(Collectors.toList());
+
+
+        return  blockDetailDTOS;
     }
 
 }
