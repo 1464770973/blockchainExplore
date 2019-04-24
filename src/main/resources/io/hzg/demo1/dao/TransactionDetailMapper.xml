@@ -10,6 +10,9 @@
   <sql id="Base_Column_List">
     txid, address, type, amount
   </sql>
+  <update id="truncate">
+    truncate table block;
+  </update>
   <select id="selectByPrimaryKey" parameterType="io.hzg.demo1.po.TransactionDetailKey" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
