@@ -18,8 +18,14 @@
   <update id="truncate">
     truncate table block;
   </update>
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectTransactionByTxhash" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
+    <include refid="Base_Column_List" />
+    from transaction
+    where txhash = #{txhash}
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
     <include refid="Base_Column_List" />
     from transaction
     where txid = #{txid,jdbcType=CHAR}

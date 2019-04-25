@@ -16,4 +16,10 @@ public class TransactionServiceImpl implements TransactionService {
         List<Transaction> transactions = transactionMapper.selectTransaction();
         return transactions;
     }
+
+    @Override
+    public List<Transaction> selectTransactionByTxhash(String txhash) {
+        List<Transaction> transactions = transactionMapper.selectTransactionByTxhash(txhash);
+        return transactions;
+    }
 }

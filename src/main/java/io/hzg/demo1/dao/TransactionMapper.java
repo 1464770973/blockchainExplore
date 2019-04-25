@@ -1,6 +1,7 @@
 package io.hzg.demo1.dao;
 
 import io.hzg.demo1.po.Transaction;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,4 +19,5 @@ public interface TransactionMapper {
     int updateByPrimaryKey(Transaction record);
     int truncate();
     List<Transaction> selectTransaction();
+    List<Transaction> selectTransactionByTxhash(@Param("txhash") String txhash);
 }
